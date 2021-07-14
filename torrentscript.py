@@ -14,7 +14,8 @@ firebase_admin.initialize_app(cred, {
 torrentToAdd = db.reference('/TorrentToBeAdded')
 torrentAdded = db.reference('/TorrentAdded')
 time.sleep(30)
-client=Client(host='192.168.31.218',port=9091,username='root', password='root')
+client = Client(host='192.168.31.218', port=9091,
+                username='root', password='root')
 # ##############TORRENT METHODS################################
 
 
@@ -65,11 +66,12 @@ def dbaddTorrent():
 
 
 def dbremovelinks():
-    toaddtorrent=torrentToAdd.get()
-    if(toaddtorrent!=None):
-        for key,value in toaddtorrent.items():
-            if(value['isAdded']==True):
+    toaddtorrent = torrentToAdd.get()
+    if(toaddtorrent != None):
+        for key, value in toaddtorrent.items():
+            if(value['isAdded'] == True):
                 torrentToAdd.child(key).delete()
+
 
 def dbgetAllTorrent():
     alltorrent = getAllTorrent()
@@ -77,18 +79,18 @@ def dbgetAllTorrent():
         if (t.progress > 0):
             addedtorrent = torrentAdded.get()
             if(addedtorrent != None):
-                has=False
+                has = False
                 for key, value in addedtorrent.items():
 
                     if(value['name'] == t.name):
-                        has=True
+                        has = True
                         torrentAdded.child(key).update({'status': t.status, 'rate_download': t.rateDownload,
                                                         'progess': t.progress, 'total_size': t.total_size, 'left_until_done': t.left_until_done})
 
-                if(has==False):
-                 print('this 1')
-                 torrentAdded.push({'id': t.id, 'name': t.name, 'status': t.status, 'rate_download': t.rateDownload,
-                 'progess': t.progress, 'total_size': t.total_size, 'left_until_done': t.left_until_done, 'isPause': 1, 'isDelete': False, 'isDeleteWithData': False})
+                if(has == False):
+                    print('this 1')
+                    torrentAdded.push({'id': t.id, 'name': t.name, 'status': t.status, 'rate_download': t.rateDownload,
+                                       'progess': t.progress, 'total_size': t.total_size, 'left_until_done': t.left_until_done, 'isPause': 1, 'isDelete': False, 'isDeleteWithData': False})
             else:
                 print('this')
                 torrentAdded.push({'id': t.id, 'name': t.name, 'status': t.status, 'rate_download': t.rateDownload,
@@ -133,8 +135,6 @@ def dbRemoveWithDataTorrent():
 
 
 if __name__ == '__main__':
-    
-   
     while(True):
         dbgetAllTorrent()
         dbstartTorrent()
